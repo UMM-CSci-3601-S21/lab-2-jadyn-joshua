@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
-import umm3601.user.Database;
+import umm3601.user.UserDatabase;
 import umm3601.user.UserController;
 
 public class Server {
 
   public static final String CLIENT_DIRECTORY = "../client";
   public static final String USER_DATA_FILE = "/users.json";
-  private static Database userDatabase;
+  private static UserDatabase userDatabase;
 
   public static void main(String[] args) {
 
@@ -53,7 +53,7 @@ public class Server {
     UserController userController = null;
 
     try {
-      userDatabase = new Database(USER_DATA_FILE);
+      userDatabase = new UserDatabase(USER_DATA_FILE);
       userController = new UserController(userDatabase);
     } catch (IOException e) {
       System.err.println("The server failed to load the user data; shutting down.");
