@@ -40,18 +40,19 @@ public class TodosControllerSpec {
     ctx.clearCookieStore();
 
     db = new TodosDatabase(Server.TODOS_DATA_FILE);
-    todosController = new TodosController(db);
+    TodosController = new TodosController(db);
   }
 
   @Test
   public void GET_to_request_all_todos() throws IOException {
     // Call the method on the mock controller
-    todosController.getTodos(ctx);
+    TodosController.getTodos(ctx);
 
     // Confirm that `json` was called with all the users.
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     assertEquals(db.size(), argument.getValue().length);
+    //test
   }
 
 }
