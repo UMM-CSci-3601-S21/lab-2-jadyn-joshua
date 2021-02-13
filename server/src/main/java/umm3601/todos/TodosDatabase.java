@@ -64,6 +64,12 @@ public class TodosDatabase {
       }
     }
 
+    // Filter todos by body if defined
+    if (queryParams.containsKey("contains")) {
+      String containsParam = queryParams.get("contains").get(0);
+      filteredTodos = filterTodosByBody(filteredTodos, containsParam);
+    }
+
 
     return filteredTodos;
   }
@@ -89,6 +95,18 @@ public class TodosDatabase {
    */
   public Todos[] filterTodosByStatus(Todos[] todos, boolean targetStatus) {
     return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todos[]::new);
+  }
+
+
+   /**
+   * Get an array of a todos based on a string in their bodies
+   *
+   * @param todos     the list of todos to filter by what their body contains
+   * @param targetString the string we want to look for in the bodies
+   * @return an array of all the todos filtered by what their body contains
+   */
+  public Todos[] filterTodosByBody(Todos[] todos, String targetString) {
+    return Arrays.stream(todos).filter(x -> x.body.contains(targetString) == true).toArray(Todos[]::new);
   }
 
 
