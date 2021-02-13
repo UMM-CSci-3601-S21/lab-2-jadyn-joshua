@@ -70,6 +70,12 @@ public class TodosDatabase {
       filteredTodos = filterTodosByBody(filteredTodos, containsParam);
     }
 
+    // Filter todos by owner if defined
+    if (queryParams.containsKey("owner")) {
+      String ownerParam = queryParams.get("owner").get(0);
+      filteredTodos = filterTodosByOwner(filteredTodos, ownerParam);
+    }
+
 
     return filteredTodos;
   }
@@ -108,6 +114,18 @@ public class TodosDatabase {
   public Todos[] filterTodosByBody(Todos[] todos, String targetString) {
     return Arrays.stream(todos).filter(x -> x.body.contains(targetString) == true).toArray(Todos[]::new);
   }
+
+  /**
+   * Get an array of a todos based on their owner
+   *
+   * @param todos     the list of todos to filter by their owner
+   * @param targetOwner the owner we want to filter the todos by
+   * @return an array of all the todos filtered by what their owner
+   */
+  public Todos[] filterTodosByOwner(Todos[] todos, String targetOwner) {
+    return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todos[]::new);
+  }
+
 
 
 
