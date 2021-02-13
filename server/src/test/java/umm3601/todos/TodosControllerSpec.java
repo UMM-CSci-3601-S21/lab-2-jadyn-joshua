@@ -55,4 +55,18 @@ public class TodosControllerSpec {
     //test
   }
 
+  @Test
+  public void GET_to_request_limit_10_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("limit", Arrays.asList(new String[] { "10" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    TodosController.getTodos(ctx);
+
+    // Confirm that all the users passed to `json` have age 25.
+    ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
+    verify(ctx).json(argument.capture());
+    assertEquals(10, argument.getValue().length);
+  }
+
 }
