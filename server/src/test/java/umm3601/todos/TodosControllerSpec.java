@@ -87,5 +87,38 @@ public class TodosControllerSpec {
     }
   }
 
+  @Test
+  public void GET_to_request_status_incomplete_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("status", Arrays.asList(new String[] { "incomplete" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    TodosController.getTodos(ctx);
+
+    // Confirm that all the users passed to `json` have a incomplete status.
+    ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
+    verify(ctx).json(argument.capture());
+    for (Todos todos : argument.getValue()) {
+      assertEquals(false, todos.status);
+    }
+  }
+
+
+  @Test
+  public void GET_to_request_body_contains_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("contains", Arrays.asList(new String[] { "cillum" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    TodosController.getTodos(ctx);
+
+    // Confirm that all the users passed to `json` have a body that contains "cillum"
+    ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
+    verify(ctx).json(argument.capture());
+    for (Todos todos : argument.getValue()) {
+      assertEquals(true, todos.body.contains("cillum"));
+    }
+  }
+
 
 }
