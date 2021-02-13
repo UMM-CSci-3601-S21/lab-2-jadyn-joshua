@@ -48,7 +48,7 @@ public class TodosControllerSpec {
     // Call the method on the mock controller
     TodosController.getTodos(ctx);
 
-    // Confirm that `json` was called with all the users.
+    // Confirm that `json` was called with all the todos.
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     assertEquals(db.size(), argument.getValue().length);
@@ -63,7 +63,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have age 25.
+    // Confirm that all the todos passed to `json` have age 25.
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     assertEquals(10, argument.getValue().length);
@@ -79,7 +79,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have a completed status.
+    // Confirm that all the todos passed to `json` have a completed status.
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
@@ -95,7 +95,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have a incomplete status.
+    // Confirm that all the todos passed to `json` have a incomplete status.
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
@@ -112,7 +112,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have a body that contains "cillum"
+    // Confirm that all the todos passed to `json` have a body that contains "cillum"
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
@@ -128,11 +128,27 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have the owner "Fry"
+    // Confirm that all the todos passed to `json` have the owner "Fry"
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
       assertEquals(true, todos.owner.equals("Fry"));
+    }
+  }
+
+  @Test
+  public void GET_to_request_category_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("category", Arrays.asList(new String[] { "groceries" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    TodosController.getTodos(ctx);
+
+    // Confirm that all the todos passed to `json` have the category "groceries"
+    ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
+    verify(ctx).json(argument.capture());
+    for (Todos todos : argument.getValue()) {
+      assertEquals(true, todos.category.equals("groceries"));
     }
   }
 
