@@ -77,6 +77,13 @@ public class TodosDatabase {
     }
 
 
+    // Filter todos by category if defined
+    if (queryParams.containsKey("category")) {
+      String categoryParam = queryParams.get("category").get(0);
+      filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
+    }
+
+
     return filteredTodos;
   }
 
@@ -120,10 +127,21 @@ public class TodosDatabase {
    *
    * @param todos     the list of todos to filter by their owner
    * @param targetOwner the owner we want to filter the todos by
-   * @return an array of all the todos filtered by what their owner
+   * @return an array of all the todos filtered by their owner
    */
   public Todos[] filterTodosByOwner(Todos[] todos, String targetOwner) {
     return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todos[]::new);
+  }
+
+  /**
+   * Get an array of a todos based on their category
+   *
+   * @param todos     the list of todos to filter by their category
+   * @param targetCategory the category we want to filter the todos by
+   * @return an array of all the todos filtered by their category
+   */
+  public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory) {
+    return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todos[]::new);
   }
 
 
