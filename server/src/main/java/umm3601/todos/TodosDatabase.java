@@ -42,7 +42,7 @@ public class TodosDatabase {
   public Todos[] listTodos(Map<String, List<String>> queryParams) {
     Todos[] filteredTodos = allTodos;
 
-     // Filter limit if defined
+     // Filter todos by limit if defined
      if (queryParams.containsKey("limit")) {
       String limitParam = queryParams.get("limit").get(0);
       try {
@@ -53,11 +53,23 @@ public class TodosDatabase {
       }
     }
 
+    // Filter todos by status if defined
+    if (queryParams.containsKey("status")) {
+      String statusParam = queryParams.get("status").get(0);
+      if( "complete".equals(statusParam)) {
+        filteredTodos = filterTodosByStatus(filteredTodos, true);
+      }
+      else {
+        filteredTodos = filterTodosByStatus(filteredTodos, false);
+      }
+    }
+
+
     return filteredTodos;
   }
 
 /**
-   * Get an array of a certain number of todos based
+   * Get an array of a certain number of todos based on limit
    *
    * @param todos     the list of todos to filter by limit
    * @param targetLimit the number we want to limit the todos by
@@ -65,6 +77,18 @@ public class TodosDatabase {
    */
   public Todos[] filterTodosByLimit(Todos[] todos, int targetLimit) {
     return Arrays.copyOfRange(todos, 0, targetLimit);
+  }
+
+
+  /**
+   * Get an array of a todos based on status
+   *
+   * @param todos     the list of todos to filter by status
+   * @param targetStatus the status we want to filter the todos by
+   * @return an array of all the todos filtered byt the target status.
+   */
+  public Todos[] filterTodosByStatus(Todos[] todos, boolean targetStatus) {
+    return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todos[]::new);
   }
 
 
