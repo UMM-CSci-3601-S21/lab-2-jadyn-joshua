@@ -42,12 +42,30 @@ public class TodosDatabase {
   public Todos[] listTodos(Map<String, List<String>> queryParams) {
     Todos[] filteredTodos = allTodos;
 
-
+     // Filter limit if defined
+     if (queryParams.containsKey("limit")) {
+      String limitParam = queryParams.get("limit").get(0);
+      try {
+        int targetLimit = Integer.parseInt(limitParam);
+        filteredTodos = filterTodosByLimit(filteredTodos, targetLimit);
+      } catch (NumberFormatException e) {
+        throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
+      }
+    }
 
     return filteredTodos;
   }
 
-
+/**
+   * Get an array of a certain number of todos based
+   *
+   * @param todos     the list of todos to filter by limit
+   * @param targetLimit the number we want to limit the todos by
+   * @return an array of all the todos limited by the target limit
+   */
+  public Todos[] filterTodosByLimit(Todos[] todos, int targetLimit) {
+    return Arrays.copyOfRange(todos, 0, targetLimit);
+  }
 
 
 
