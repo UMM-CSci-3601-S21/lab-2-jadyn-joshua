@@ -120,5 +120,21 @@ public class TodosControllerSpec {
     }
   }
 
+  @Test
+  public void GET_to_request_owner_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("owner", Arrays.asList(new String[] { "Fry" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    TodosController.getTodos(ctx);
+
+    // Confirm that all the users passed to `json` have the owner "Fry"
+    ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
+    verify(ctx).json(argument.capture());
+    for (Todos todos : argument.getValue()) {
+      assertEquals(true, todos.owner.equals("Fry"));
+    }
+  }
+
 
 }
