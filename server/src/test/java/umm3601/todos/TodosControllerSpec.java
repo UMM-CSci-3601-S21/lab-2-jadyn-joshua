@@ -55,6 +55,8 @@ public class TodosControllerSpec {
     //test
   }
 
+
+
   @Test
   public void GET_to_request_limit_10_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
@@ -229,7 +231,6 @@ public class TodosControllerSpec {
   }
 
 
-
   @Test
   public void GET_to_sort_body_filter_owner_category_status_contains_limit_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
@@ -252,6 +253,22 @@ public class TodosControllerSpec {
       assertEquals(true, sortedTodos[i].category.equals("video games"));
       assertEquals(true, sortedTodos.length == 3);
     }
+  }
+
+
+  @Test
+  public void GET_to_request_todo_with_existent_id() throws IOException {
+    when(ctx.pathParam("id", String.class)).thenReturn(new Validator<String>("58895985a22c04e761776d54", "", "id"));
+    userController.getTodo(ctx);
+    verify(ctx).status(201);
+  }
+
+  @Test
+  public void GET_to_request_user_with_nonexistent_id() throws IOException {
+    when(ctx.pathParam("id", String.class)).thenReturn(new Validator<String>("nonexistent", "", "id"));
+    Assertions.assertThrows(NotFoundResponse.class, () -> {
+      userController.getTodo(ctx);
+    });
   }
 
 
