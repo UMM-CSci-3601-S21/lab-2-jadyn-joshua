@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
 import com.google.gson.Gson;
 
 import io.javalin.http.BadRequestResponse;
@@ -83,7 +84,6 @@ public class TodosDatabase {
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
 
-
     return filteredTodos;
   }
 
@@ -143,6 +143,7 @@ public class TodosDatabase {
   public Todos[] filterTodosByCategory(Todos[] todos, String targetCategory) {
     return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todos[]::new);
   }
+
 
 
 
