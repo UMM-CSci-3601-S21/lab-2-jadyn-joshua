@@ -175,7 +175,7 @@ public class TodosControllerSpec {
 
 
   @Test
-  public void GET_to_sort_body_todos() throws IOException {
+  public void GET_to_request_sort_body_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("orderBy", Arrays.asList(new String[] { "body" }));
 
@@ -187,7 +187,7 @@ public class TodosControllerSpec {
   }
 
   @Test
-  public void GET_to_sort_owner_todos() throws IOException {
+  public void GET_to_request_sort_owner_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("orderBy", Arrays.asList(new String[] { "owner" }));
 
@@ -199,7 +199,7 @@ public class TodosControllerSpec {
   }
 
   @Test
-  public void GET_to_sort_status_todos() throws IOException {
+  public void GET_to_request_sort_status_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("orderBy", Arrays.asList(new String[] { "status" }));
 
@@ -217,7 +217,7 @@ public class TodosControllerSpec {
   }
 
   @Test
-  public void GET_to_sort_category_todos() throws IOException {
+  public void GET_to_request_sort_category_todos() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
     queryParams.put("orderBy", Arrays.asList(new String[] { "category" }));
 
