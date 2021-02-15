@@ -15,7 +15,7 @@ public class TodosController {
    * Construct a controller for todos.
    * <p>
    * This loads the "database" of todo info from a JSON file and stores that
-   * internally so that (subsets of) users can be returned in response to
+   * internally so that (subsets of) todos can be returned in response to
    * requests.
    *
    * @param database the `Database` containing todos data

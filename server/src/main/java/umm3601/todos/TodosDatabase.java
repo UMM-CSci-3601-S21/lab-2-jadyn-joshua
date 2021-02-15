@@ -36,7 +36,7 @@ public class TodosDatabase {
 
   /**
    * Get the single todo specified by the given ID. Return `null` if there is no
-   * user with that ID.
+   * todo with that ID.
    *
    * @param id the ID of the desired todo
    * @return the todo with the given ID, or null if there is no todo with that ID

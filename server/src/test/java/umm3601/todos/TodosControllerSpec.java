@@ -74,7 +74,7 @@ public class TodosControllerSpec {
 
 
   /**
-   * Test that if the user sends a request with an illegal value in
+   * Test that if the todos sends a request with an illegal value in
    * the limit field (i.e., something that can't be parsed to a number)
    * we get a reasonable error code back.
    */
