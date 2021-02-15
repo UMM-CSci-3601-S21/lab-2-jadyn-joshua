@@ -229,4 +229,30 @@ public class TodosControllerSpec {
   }
 
 
+
+  @Test
+  public void GET_to_sort_body_filter_owner_category_status_contains_limit_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+
+    queryParams.put("orderBy", Arrays.asList(new String[] { "body" }));
+    queryParams.put("owner", Arrays.asList(new String[] { "Fry" }));
+    queryParams.put("category", Arrays.asList(new String[] { "video games" }));
+    queryParams.put("status", Arrays.asList(new String[] { "complete" }));
+    queryParams.put("contains", Arrays.asList(new String[] { "nulla" }));
+    queryParams.put("limit", Arrays.asList(new String[] { "3" }));
+
+
+    Todos[] sortedTodos = db.listTodos(queryParams);
+    //Confirm that the todos are sorted alphabetically by their body, have the owner Fry, are completed, and that there are only 3 todos
+    for(int i = 0; i < sortedTodos.length - 1; i++){
+      assertEquals(true, sortedTodos[i].body.compareTo(sortedTodos[i+1].body) < 0);
+      assertEquals(true, sortedTodos[i].owner.equals("Fry"));
+      assertEquals(true, sortedTodos[i].category.equals("video games"));
+      assertEquals(true, sortedTodos[i].status);
+      assertEquals(true, sortedTodos[i].category.equals("video games"));
+      assertEquals(true, sortedTodos.length == 3);
+    }
+  }
+
+
 }
