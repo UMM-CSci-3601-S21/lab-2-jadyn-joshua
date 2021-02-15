@@ -265,7 +265,7 @@ public class TodosControllerSpec {
   }
 
   @Test
-  public void GET_to_request_user_with_nonexistent_id() throws IOException {
+  public void GET_to_request_todo_with_nonexistent_id() throws IOException {
     when(ctx.pathParam("id", String.class)).thenReturn(new Validator<String>("nonexistent", "", "id"));
     Assertions.assertThrows(NotFoundResponse.class, () -> {
       TodosController.getTodo(ctx);
