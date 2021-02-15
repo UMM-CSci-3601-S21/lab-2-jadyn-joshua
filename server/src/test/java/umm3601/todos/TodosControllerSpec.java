@@ -16,15 +16,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import io.javalin.core.validation.Validator;
+
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
+
 
 import umm3601.Server;
 
 /**
- * Tests the logic of the UserController
+ * Tests the logic of the TodosController
  *
  * @throws IOException
  */
@@ -63,7 +63,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the todos passed to `json` have age 25.
+    // Confirm that there were only 10 todos passed to `json`
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     assertEquals(10, argument.getValue().length);
@@ -165,7 +165,7 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the todos passed to `json` have the owner "Fry"
+    // Confirm that all the todos passed to `json` have the category "groceries"
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
@@ -180,50 +180,53 @@ public class TodosControllerSpec {
     queryParams.put("orderBy", Arrays.asList(new String[] { "body" }));
 
     Todos[] sortedTodos = db.listTodos(queryParams);
+    //Confirm that the todos are sorted alphabetically by their body
     for(int i = 0; i < db.size() - 1; i++){
       assertEquals(true, sortedTodos[i].body.compareTo(sortedTodos[i+1].body) < 0);
     }
-}
-
-@Test
-public void GET_to_sort_owner_todos() throws IOException {
-  Map<String, List<String>> queryParams = new HashMap<>();
-  queryParams.put("orderBy", Arrays.asList(new String[] { "owner" }));
-
-  Todos[] sortedTodos = db.listTodos(queryParams);
-
-  for(int i = 0; i < db.size() - 1; i++){
-    assertEquals(true, sortedTodos[i].owner.compareTo(sortedTodos[i+1].owner) <= 0);
   }
-}
 
-@Test
-public void GET_to_sort_status_todos() throws IOException {
-  Map<String, List<String>> queryParams = new HashMap<>();
-  queryParams.put("orderBy", Arrays.asList(new String[] { "status" }));
+  @Test
+  public void GET_to_sort_owner_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("orderBy", Arrays.asList(new String[] { "owner" }));
 
-  Todos[] sortedTodos = db.listTodos(queryParams);
-
-  for(int i = 0; i < db.size() - 1; i++){
-    Boolean statusT1 = sortedTodos[i].status;
-    String stringStatT1 = statusT1.toString();
-    Boolean statusT2 = sortedTodos[i+1].status;
-    String stringStatT2 = statusT2.toString();
-    assertEquals(true, stringStatT1.compareTo(stringStatT2) <= 0);
+    Todos[] sortedTodos = db.listTodos(queryParams);
+    //Confirm that the todos are sorted alphabetically by their owner
+    for(int i = 0; i < db.size() - 1; i++){
+      assertEquals(true, sortedTodos[i].owner.compareTo(sortedTodos[i+1].owner) <= 0);
+    }
   }
-}
 
-@Test
-public void GET_to_sort_category_todos() throws IOException {
-  Map<String, List<String>> queryParams = new HashMap<>();
-  queryParams.put("orderBy", Arrays.asList(new String[] { "category" }));
+  @Test
+  public void GET_to_sort_status_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("orderBy", Arrays.asList(new String[] { "status" }));
 
-  Todos[] sortedTodos = db.listTodos(queryParams);
+    Todos[] sortedTodos = db.listTodos(queryParams);
 
-  for(int i = 0; i < db.size() - 1; i++){
-    assertEquals(true, sortedTodos[i].category.compareTo(sortedTodos[i+1].category) <= 0);
+    for(int i = 0; i < db.size() - 1; i++){
+
+      Boolean statusT1 = sortedTodos[i].status;
+      String stringStatT1 = statusT1.toString();
+      Boolean statusT2 = sortedTodos[i+1].status;
+      String stringStatT2 = statusT2.toString();
+      //Confirm that the todos are sorted alphabetically by their status
+      assertEquals(true, stringStatT1.compareTo(stringStatT2) <= 0);
+    }
   }
-}
+
+  @Test
+  public void GET_to_sort_category_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("orderBy", Arrays.asList(new String[] { "category" }));
+
+    Todos[] sortedTodos = db.listTodos(queryParams);
+    //Confirm that the todos are sorted alphabetically by their category
+    for(int i = 0; i < db.size() - 1; i++){
+      assertEquals(true, sortedTodos[i].category.compareTo(sortedTodos[i+1].category) <= 0);
+    }
+  }
 
 
 }

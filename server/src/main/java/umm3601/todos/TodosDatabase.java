@@ -13,11 +13,11 @@ import com.google.gson.Gson;
 import io.javalin.http.BadRequestResponse;
 
 /**
- * A fake "database" of user info
+ * A fake "database" of todos info
  * <p>
  * Since we don't want to complicate this lab with a real database, we're going
- * to instead just read a bunch of user data from a specified JSON file, and
- * then provide various database-like methods that allow the `UserController` to
+ * to instead just read a bunch of todos data from a specified JSON file, and
+ * then provide various database-like methods that allow the `TodosController` to
  * "query" the "database".
  */
 public class TodosDatabase {
@@ -36,10 +36,10 @@ public class TodosDatabase {
 
 
   /**
-   * Get an array of all the users satisfying the queries in the params.
+   * Get an array of all the todos satisfying the queries in the params.
    *
    * @param queryParams map of key-value pairs for the query
-   * @return an array of all the users matching the given criteria
+   * @return an array of all the todos matching the given criteria
    */
   public Todos[] listTodos(Map<String, List<String>> queryParams) {
     Todos[] filteredTodos = allTodos;
@@ -66,7 +66,7 @@ public class TodosDatabase {
       }
     }
 
-    // Filter todos by body if defined
+    // Filter todos by what their body contains if defined
     if (queryParams.containsKey("contains")) {
       String containsParam = queryParams.get("contains").get(0);
       filteredTodos = filterTodosByBody(filteredTodos, containsParam);
@@ -85,7 +85,7 @@ public class TodosDatabase {
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
 
-    // Sort todos by attribute if defined
+    // Sort todos by a specific attribute if defined
     if (queryParams.containsKey("orderBy")) {
       String orderByParam = queryParams.get("orderBy").get(0);
       filteredTodos = sortTodos(filteredTodos, orderByParam);
@@ -111,7 +111,7 @@ public class TodosDatabase {
    *
    * @param todos     the list of todos to filter by status
    * @param targetStatus the status we want to filter the todos by
-   * @return an array of all the todos filtered byt the target status.
+   * @return an array of all the todos filtered by the target status.
    */
   public Todos[] filterTodosByStatus(Todos[] todos, boolean targetStatus) {
     return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todos[]::new);
