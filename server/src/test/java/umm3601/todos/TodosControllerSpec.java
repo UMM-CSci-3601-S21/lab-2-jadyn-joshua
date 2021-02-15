@@ -16,9 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-
+import io.javalin.core.validation.Validator;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 
 
 import umm3601.Server;
@@ -259,7 +260,7 @@ public class TodosControllerSpec {
   @Test
   public void GET_to_request_todo_with_existent_id() throws IOException {
     when(ctx.pathParam("id", String.class)).thenReturn(new Validator<String>("58895985a22c04e761776d54", "", "id"));
-    userController.getTodo(ctx);
+    TodosController.getTodo(ctx);
     verify(ctx).status(201);
   }
 
@@ -267,7 +268,7 @@ public class TodosControllerSpec {
   public void GET_to_request_user_with_nonexistent_id() throws IOException {
     when(ctx.pathParam("id", String.class)).thenReturn(new Validator<String>("nonexistent", "", "id"));
     Assertions.assertThrows(NotFoundResponse.class, () -> {
-      userController.getTodo(ctx);
+      TodosController.getTodo(ctx);
     });
   }
 

@@ -1,6 +1,7 @@
 package umm3601.todos;
 
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 
 
 /**
@@ -24,6 +25,21 @@ public class TodosController {
   }
 
 
+  /**
+   * Get the single todo specified by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   */
+  public void getTodo(Context ctx) {
+    String id = ctx.pathParam("id", String.class).get();
+    Todos todo = database.getTodo(id);
+    if (todo != null) {
+      ctx.json(todo);
+      ctx.status(201);
+    } else {
+      throw new NotFoundResponse("No todo with id " + id + " was found.");
+    }
+  }
 
   /**
    * Get a JSON response with a list of all the todos in the "database".

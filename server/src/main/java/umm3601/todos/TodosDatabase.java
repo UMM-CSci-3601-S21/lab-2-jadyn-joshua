@@ -34,6 +34,17 @@ public class TodosDatabase {
     return allTodos.length;
   }
 
+  /**
+   * Get the single todo specified by the given ID. Return `null` if there is no
+   * user with that ID.
+   *
+   * @param id the ID of the desired todo
+   * @return the todo with the given ID, or null if there is no todo with that ID
+   */
+  public Todos getTodo(String id) {
+    return Arrays.stream(allTodos).filter(x -> x._id.equals(id)).findFirst().orElse(null);
+  }
+
 
   /**
    * Get an array of all the todos satisfying the queries in the params.
