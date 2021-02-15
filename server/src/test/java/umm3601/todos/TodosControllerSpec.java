@@ -70,6 +70,27 @@ public class TodosControllerSpec {
   }
 
 
+  /**
+   * Test that if the user sends a request with an illegal value in
+   * the limit field (i.e., something that can't be parsed to a number)
+   * we get a reasonable error code back.
+   */
+  @Test
+  public void GET_to_request_todos_with_illegal_limit() {
+    // We'll set the requested "limit" to be a string ("banana")
+    // that can't be parsed to a number.
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("limit", Arrays.asList(new String[] { "banana" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    // This should now throw a `BadRequestResponse` exception because
+    // our request has an limit that can't be parsed to a number.
+    Assertions.assertThrows(BadRequestResponse.class, () -> {
+      TodosController.getTodos(ctx);
+    });
+  }
+
+
 
   @Test
   public void GET_to_request_status_complete_todos() throws IOException {
