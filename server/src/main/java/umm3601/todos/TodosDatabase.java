@@ -44,17 +44,6 @@ public class TodosDatabase {
   public Todos[] listTodos(Map<String, List<String>> queryParams) {
     Todos[] filteredTodos = allTodos;
 
-     // Filter todos by limit if defined
-     if (queryParams.containsKey("limit")) {
-      String limitParam = queryParams.get("limit").get(0);
-      try {
-        int targetLimit = Integer.parseInt(limitParam);
-        filteredTodos = filterTodosByLimit(filteredTodos, targetLimit);
-      } catch (NumberFormatException e) {
-        throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
-      }
-    }
-
     // Filter todos by status if defined
     if (queryParams.containsKey("status")) {
       String statusParam = queryParams.get("status").get(0);
@@ -89,6 +78,17 @@ public class TodosDatabase {
     if (queryParams.containsKey("orderBy")) {
       String orderByParam = queryParams.get("orderBy").get(0);
       filteredTodos = sortTodos(filteredTodos, orderByParam);
+    }
+
+    // Filter todos by limit if defined
+    if (queryParams.containsKey("limit")) {
+      String limitParam = queryParams.get("limit").get(0);
+      try {
+        int targetLimit = Integer.parseInt(limitParam);
+        filteredTodos = filterTodosByLimit(filteredTodos, targetLimit);
+      } catch (NumberFormatException e) {
+        throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
+      }
     }
 
     return filteredTodos;
