@@ -144,13 +144,65 @@ public class TodosControllerSpec {
     when(ctx.queryParamMap()).thenReturn(queryParams);
     TodosController.getTodos(ctx);
 
-    // Confirm that all the todos passed to `json` have the category "groceries"
+    // Confirm that all the todos passed to `json` have the owner "Fry"
     ArgumentCaptor<Todos[]> argument = ArgumentCaptor.forClass(Todos[].class);
     verify(ctx).json(argument.capture());
     for (Todos todos : argument.getValue()) {
       assertEquals(true, todos.category.equals("groceries"));
     }
   }
+
+
+  @Test
+  public void GET_to_sort_body_todos() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("orderBy", Arrays.asList(new String[] { "body" }));
+
+    Todos[] sortedTodos = db.listTodos(queryParams);
+    for(int i = 0; i < db.size() - 1; i++){
+      assertEquals(true, sortedTodos[i].body.compareTo(sortedTodos[i+1].body) < 0);
+    }
+}
+
+@Test
+public void GET_to_sort_owner_todos() throws IOException {
+  Map<String, List<String>> queryParams = new HashMap<>();
+  queryParams.put("orderBy", Arrays.asList(new String[] { "owner" }));
+
+  Todos[] sortedTodos = db.listTodos(queryParams);
+
+  for(int i = 0; i < db.size() - 1; i++){
+    assertEquals(true, sortedTodos[i].owner.compareTo(sortedTodos[i+1].owner) <= 0);
+  }
+}
+
+@Test
+public void GET_to_sort_status_todos() throws IOException {
+  Map<String, List<String>> queryParams = new HashMap<>();
+  queryParams.put("orderBy", Arrays.asList(new String[] { "status" }));
+
+  Todos[] sortedTodos = db.listTodos(queryParams);
+
+  for(int i = 0; i < db.size() - 1; i++){
+    Boolean statusT1 = sortedTodos[i].status;
+    String stringStatT1 = statusT1.toString();
+    Boolean statusT2 = sortedTodos[i+1].status;
+    String stringStatT2 = statusT2.toString();
+    assertEquals(true, stringStatT1.compareTo(stringStatT2) <= 0);
+  }
+}
+
+@Test
+public void GET_to_sort_category_todos() throws IOException {
+  Map<String, List<String>> queryParams = new HashMap<>();
+  queryParams.put("orderBy", Arrays.asList(new String[] { "category" }));
+
+  Todos[] sortedTodos = db.listTodos(queryParams);
+
+  for(int i = 0; i < db.size() - 1; i++){
+    assertEquals(true, sortedTodos[i].category.compareTo(sortedTodos[i+1].category) <= 0);
+  }
+}
 
 
 }

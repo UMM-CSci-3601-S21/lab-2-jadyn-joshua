@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Comparator;
+
 
 import com.google.gson.Gson;
 
@@ -83,6 +85,11 @@ public class TodosDatabase {
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
 
+    // Sort todos by attribute if defined
+    if (queryParams.containsKey("orderBy")) {
+      String orderByParam = queryParams.get("orderBy").get(0);
+      filteredTodos = sortTodos(filteredTodos, orderByParam);
+    }
 
     return filteredTodos;
   }
@@ -90,7 +97,7 @@ public class TodosDatabase {
 /**
    * Get an array of a certain number of todos based on limit
    *
-   * @param todos     the list of todos to filter by limit
+   * @param todos    the list of todos to filter by limit
    * @param targetLimit the number we want to limit the todos by
    * @return an array of all the todos limited by the target limit
    */
@@ -144,6 +151,54 @@ public class TodosDatabase {
     return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todos[]::new);
   }
 
+/**
+   * Get an array of a todos sorted based on a particular attribute
+   *
+   * @param todos     the list of todos to be sorted by their attribute
+   * @param attribute the attribute we want to sort the todos by
+   * @return an array of all the todos sorted by a particular attribute
+   */
+  public Todos[] sortTodos(Todos[] todos, String attribute) {
+
+    if("owner".equals(attribute))
+      Arrays.sort(todos, new Comparator<Todos>(){
+        public int compare(Todos t1, Todos t2) {
+          return t1.owner.compareTo(t2.owner);
+       }
+      } );
+
+
+    if("category".equals(attribute))
+      Arrays.sort(todos, new Comparator<Todos>(){
+        public int compare(Todos t1, Todos t2) {
+          return t1.category.compareTo(t2.category);
+       }
+      } );
+
+
+    if("body".equals(attribute))
+      Arrays.sort(todos, new Comparator<Todos>(){
+        public int compare(Todos t1, Todos t2) {
+          return t1.body.compareTo(t2.body);
+       }
+      } );
+
+    if("status".equals(attribute))
+      Arrays.sort(todos, new Comparator<Todos>(){
+        public int compare(Todos t1, Todos t2) {
+
+         Boolean statusT1 = t1.status;
+         String stringStatT1 = statusT1.toString();
+
+         Boolean statusT2 = t2.status;
+         String stringStatT2 = statusT2.toString();
+
+         return stringStatT1.compareTo(stringStatT2);
+       }
+      } );
+
+    return todos;
+  }
 
 
 
